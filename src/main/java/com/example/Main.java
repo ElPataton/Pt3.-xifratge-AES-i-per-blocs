@@ -8,30 +8,33 @@ public class Main {
     private static final int BLOCK_SIZE = 16;
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        
         // 1. Definir una clau (16 bytes)
         byte[] clau = "AquestaEsUnaClau".getBytes();
-
-        // 2. Demanar el text pla (a xifrar)
-        System.out.println("Quin text vols xifrar?");
-        String textPla = scanner.nextLine(); //TODO;
-        System.out.println("Text pla: " + textPla);
-
-        // 3. Convertir el text pla a bytes
-        byte[] textPlaBytes = textPla.getBytes();
-
-        // 4. Aplicar el padding manualment si el text no és múltiple de BLOCK_SIZE
-        byte[] textAmbPadding = aplicarPadding(textPlaBytes);
-
-        // 5. Xifrar cada bloc
-        byte[] textXifrat = xifrarBlocsECB(textAmbPadding, clau);
-
-        // 6. Mostrar els blocs xifrats en hexadecimal
-        System.out.println("\nBlocs xifrats:");
-        for (int i = 0; i < textXifrat.length; i += BLOCK_SIZE) {
-            byte[] blocXifrat = obtenirBloc(textXifrat, i, BLOCK_SIZE);
-            System.out.println("Bloc " + (i / BLOCK_SIZE + 1) + ": " + bytesToHex(blocXifrat));
+        String textPla; 
+        try (// 2. Demanar el text pla (a xifrar)
+        Scanner scanner = new Scanner(System.in)) {
+            System.out.println("Quin text vols xifrar?");
+            textPla = scanner.nextLine();
+            System.out.println("Text pla: " + textPla);
         }
+
+            // 3. Convertir el text pla a bytes
+            byte[] textPlaBytes = textPla.getBytes();
+
+            // 4. Aplicar el padding manualment si el text no és múltiple de BLOCK_SIZE
+            byte[] textAmbPadding = aplicarPadding(textPlaBytes);
+
+            // 5. Xifrar cada bloc
+            byte[] textXifrat = xifrarBlocsECB(textAmbPadding, clau);
+
+            // 6. Mostrar els blocs xifrats en hexadecimal
+            System.out.println("\nBlocs xifrats:");
+            for (int i = 0; i < textXifrat.length; i += BLOCK_SIZE) {
+                byte[] blocXifrat = obtenirBloc(textXifrat, i, BLOCK_SIZE);
+                System.out.println("Bloc " + (i / BLOCK_SIZE + 1) + ": " + bytesToHex(blocXifrat));
+            }
+        
     }
 
     // Mètode per aplicar padding manualment si el text no és múltiple de BLOCK_SIZE
@@ -47,7 +50,7 @@ public class Main {
         for (int i = input.length; i <paddedInput.length; i++){
             paddedInput[i] = paddingvalue;
         }
-        //TODO
+        
         return paddedInput;
     }
 
@@ -83,7 +86,7 @@ public class Main {
 
     // Simular una "ronda de xifratge" aplicant XOR entre el bloc de text pla i la clau
     private static byte[] xifrarBloc(byte[] bloc, byte[] clau) {
-        byte[] blocXifrat = new byte[bloc.length]; //TODO
+        byte[] blocXifrat = new byte[bloc.length]; 
         for (int i = 0; i < bloc.length;i++){
             blocXifrat[i] = (byte) (bloc[i] ^ clau[i]);
         }
